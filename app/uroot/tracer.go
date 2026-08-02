@@ -166,51 +166,51 @@ func (t *tracer) runLoop(cancelFunc context.CancelCauseFunc) {
 							return p.Read(Addr(addr), v)
 						},
 					}
-					switch {
-					case name == "socket":
+					switch name {
+					case "socket":
 						allow = syscalls.IsSocketAllowed(s, rec.Event == SyscallEnter)
-					case name == "connect":
+					case "connect":
 						allow = syscalls.IsConnectAllowed(s, rec.Event == SyscallEnter)
-					case name == "open":
+					case "open":
 						allow = syscalls.IsOpenAllowed(s, rec.Event == SyscallEnter)
-					case name == "openat":
+					case "openat":
 						allow = syscalls.IsOpenAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "openat2":
+					case "openat2":
 						allow = syscalls.IsOpenAt2Allowed(s, rec.Event == SyscallEnter)
-					case name == "mkdir":
+					case "mkdir":
 						allow = syscalls.IsMkdirAllowed(s, rec.Event == SyscallEnter)
-					case name == "mkdirat":
+					case "mkdirat":
 						allow = syscalls.IsMkdirAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "rmdir":
+					case "rmdir":
 						allow = syscalls.IsRmdirAllowed(s, rec.Event == SyscallEnter)
-					case name == "unlink":
+					case "unlink":
 						allow = syscalls.IsUnlinkAllowed(s, rec.Event == SyscallEnter)
-					case name == "unlinkat":
+					case "unlinkat":
 						allow = syscalls.IsUnlinkAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "rename":
+					case "rename":
 						allow = syscalls.IsRenameAllowed(s, rec.Event == SyscallEnter)
-					case name == "renameat":
+					case "renameat":
 						allow = syscalls.IsRenameAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "link":
+					case "link":
 						allow = syscalls.IsLinkAllowed(s, rec.Event == SyscallEnter)
-					case name == "linkat":
+					case "linkat":
 						allow = syscalls.IsLinkAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "symlink":
+					case "symlink":
 						allow = syscalls.IsSymlinkAllowed(s, rec.Event == SyscallEnter)
-					case name == "symlinkat":
+					case "symlinkat":
 						allow = syscalls.IsSymlinkAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "access":
+					case "access":
 						// access(const char *pathname, int mode) : pathname is arg 0
 						allow = syscalls.IsAccessAllowed(s, rec.Event == SyscallEnter)
-					case name == "faccessat":
+					case "faccessat":
 						// faccessat(int dirfd, const char *pathname, int mode)
 						// pathname is arg 1, dirfd is arg 0
 						allow = syscalls.IsFaccessAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "faccessat2":
+					case "faccessat2":
 						// faccessat2(int dirfd, const char *pathname, int mode, int flags)
 						// pathname is arg 1, dirfd is arg 0
 						allow = syscalls.IsFaccessAtAllowed(s, rec.Event == SyscallEnter)
-					case name == "write" || name == "writev" || name == "send" || name == "sendmsg" || name == "sendmmsg" || name == "sendto":
+					case "write", "writev", "send", "sendmsg", "sendmmsg", "sendto":
 						syscallArgs := rec.Syscall.Args
 						fd := syscallArgs[0].Int()
 
@@ -227,7 +227,7 @@ func (t *tracer) runLoop(cancelFunc context.CancelCauseFunc) {
 							println(fmt.Sprintf("Trying to write to fd %d which is of type %s", fd, fdType))
 						}
 
-					case name == "read" || name == "readv" || name == "recv" || name == "recvfrom" || name == "recvmsg" || name == "recvmmsg":
+					case "read", "readv", "recv", "recvfrom", "recvmsg", "recvmmsg":
 						syscallArgs := rec.Syscall.Args
 						fd := syscallArgs[0].Int()
 
@@ -243,7 +243,7 @@ func (t *tracer) runLoop(cancelFunc context.CancelCauseFunc) {
 							fdType := args.FdType(p.pid, fd)
 							println(fmt.Sprintf("Trying to read from fd %d which is of type %s", fd, fdType))
 						}
-					case name == "shutdown":
+					case "shutdown":
 						// shutdown(int sockfd, int how)
 						syscallArgs := rec.Syscall.Args
 						fd := syscallArgs[0].Int()
@@ -254,7 +254,7 @@ func (t *tracer) runLoop(cancelFunc context.CancelCauseFunc) {
 							fdType := args.FdType(p.pid, fd)
 							println(fmt.Sprintf("Trying to shutdown fd %d which is of type %s", fd, fdType))
 						}
-					case name == "close":
+					case "close":
 						// close(int fd)
 						syscallArgs := rec.Syscall.Args
 						fd := syscallArgs[0].Int()

@@ -19,7 +19,6 @@ package uroot
 import (
 	"fmt"
 	"os"
-	"unsafe"
 )
 
 // Addr is an address for use in strace I/O
@@ -47,8 +46,7 @@ func (a SyscallArgument) Pointer() Addr {
 }
 
 func (a SyscallArgument) String() string {
-	strPtr := (*string)(unsafe.Pointer(a.Value))
-	return fmt.Sprint(strPtr)
+	return fmt.Sprintf("0x%x", a.Value)
 }
 
 // Int returns the int32 representation of a 32-bit signed integer argument.
