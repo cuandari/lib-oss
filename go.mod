@@ -2,7 +2,7 @@ module github.com/cuandari/lib
 
 go 1.25.0
 
-require github.com/seccomp/libseccomp-golang v0.11.1
+require github.com/seccomp/libseccomp-golang v0.12.0
 
 require (
 	github.com/iceber/iouring-go v0.0.0-20230403020409-002cfd2e2a90
